@@ -2,9 +2,8 @@ import socket
 import sys
 
 ####################################### 变量初始化
-# 服务端下载的文件的文件名
-savedFileName = ""
-
+# 服务端下载的文件的的存放路径
+filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
 #######################################  加密解密函数
 
 
@@ -42,10 +41,10 @@ def judgeFileName(fileName):
 # 发送下载命令，请求服务端返回该文件并接收保存，接收服务端消息提示
 def downloadFile(fileName):
     print("Ready to download file from server")
-    file = "Get-" + fileName
+    file = filePath + "Get-" + fileName
     fs = open(file, 'wb')
     while True:
-        data, addr = mainSocket.recvfrom(1024)
+        data, addr = mainSocket.recvfrom(1024 * 8)
         if not data:
             break
         fs.write(data)

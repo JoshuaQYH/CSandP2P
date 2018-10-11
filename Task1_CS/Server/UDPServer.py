@@ -1,7 +1,9 @@
 import socket
 import os
 
-filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Server\\serverData\\"
+####################################### 变量初始化
+# 服务端下载的文件的的存放路径
+filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
 
 ############################################ socket相关配置
 # 建立UDP socket

@@ -10,10 +10,10 @@ savedFileName = ""
 
 ########################################  socket配置相关
 # 服务端地址
-serverAddress = ('127.0.0.1', 31500)
+serverAddress = ('127.0.0.1', 3100)
 # 创建客户端socket 
 mainSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-clientAddress = ('127.0.0.1', 31501)
+clientAddress = ('127.0.0.1', 3101)
 # 绑定客户端 端口
 mainSocket.bind(clientAddress)
 
@@ -72,22 +72,23 @@ def uploadFile(fileName):
     print("upload done!")
     return 0
 
-
+##########################################请求命令部分
 while True:
     # 发送命令，传给服务器
     msg = input('''Input one of the following command:\n 
                     1. list  ----------------------------- list the files on server \n
                     2. download [filename] ---------------download file from server\n
                     3. upload [filename] ---------------------upload file to server \n
-                    4. exit -------------------------------------------close socket ''')
+                    4. exit -------------------------------------------close socket\n ''')
         
     if not msg:
         break
 
     # 将消息按空格进行分割，比如command[0] = upload command[1] = filename
-    command = msg.spilt()
+    command = msg.split()
     
     if command[0] == "list":
+        mainSocket.sendto(b'list', serverAddress)
         listFile()
 
     elif command[0] == "download":

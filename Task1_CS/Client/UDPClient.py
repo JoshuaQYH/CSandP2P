@@ -42,26 +42,15 @@ def judgeFileName(fileName):
 # 发送下载命令，请求服务端返回该文件并接收保存，接收服务端消息提示
 def downloadFile(fileName):
     print("Ready to download file from server")
-    # 发送请求的文件名，此处假设文件名正确
-    mainSocket.sendto(fileName, serverAddress)
-
+    file = "Get-" + fileName
+    fs = open(file, 'wb')
     while True:
-        data1, addr1 = mainSocket.recvfrom(2048)
-        if data1 == b'START':
-            print("开始接收文件!\n")
-            with open(fileName, 'wb') as fw:
-                while True:
-                    data2, addr2 = mainSocket.recvfrom(1024 * 8)
-                    if data2 == b'END':
-                        print("结束接收文件")
-                    else:
-                        fw.write(data2)
-                        print("正在写入文件")
-                fw.close()
-
-    print("download done!")
+        data, addr = mainSocket.recvfrom(1024)
+        if not data:
+            break
+        fs.write(data)
     return 0
-
+    fs.close()
 # 发送文件给服务端，上传命令后发送文件，最后接收服务端消息提示
 def uploadFile(fileName):
      # 检测当前目录是否存在该文件
@@ -83,16 +72,14 @@ while True:
         
     if not msg:
         break
-
+    mainSocket.sendto(msg.encode('utf-8'), serverAddress)
     # 将消息按空格进行分割，比如command[0] = upload command[1] = filename
     command = msg.split()
     
     if command[0] == "list":
-        mainSocket.sendto(b'list', serverAddress)
         listFile()
 
     elif command[0] == "download":
-        mainSocket.sendto(b'download', serverAddress)
         downloadFile(command[1])
        
     elif command[0] == "upload":

@@ -56,6 +56,7 @@ def upload(fileName):
 while True:
     #服务器接收客户端消息
     data, addr = mainSocket.recvfrom(BUFFSIZE)
+    
     if not data:
         print ("client has exist")
         break

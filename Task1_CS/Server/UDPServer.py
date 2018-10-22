@@ -1,7 +1,7 @@
 import socket
 import os
 
-filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Server\\serverData\\"
+filePath = "F:\\Github\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
 
 ############################################ socket相关配置
 # 建立UDP socket
@@ -19,7 +19,7 @@ def listFile():
         #print(root) #当前目录路径  
         #print(dirs) #当前路径下所有子目录  
         print(files) #当前路径下所有非目录子文件
-        files.remove("UDPServer.py")
+        # files.remove("UDPServer.py")
         fileStr = str(files)
         mainSocket.sendto(fileStr.encode("utf-8"), clientAddress)
     print("Have sent files!")

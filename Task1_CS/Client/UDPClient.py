@@ -3,7 +3,7 @@ import sys
 
 ####################################### 变量初始化
 # 服务端下载的文件的的存放路径
-filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
+filePath = "F:\\Github\\ComNetProject1\\Task1_CS\\Server\\serverData\\"
 #######################################  加密解密函数
 
 
@@ -64,10 +64,10 @@ def uploadFile(fileName):
 while True:
     # 发送命令，传给服务器
     msg = input('''Input one of the following command:\n 
-                    1. list  ----------------------------- list the files on server \n
-                    2. download [filename] ---------------download file from server\n
-                    3. upload [filename] ---------------------upload file to server \n
-                    4. exit -------------------------------------------close socket\n ''')
+                    * list  ----------------------------- list the files on server \n
+                    * download [filename] ---------------download file from server\n
+                    * upload [filename] ---------------------upload file to server \n
+                    * exit -------------------------------------------close socket\n ''')
         
     if not msg:
         break

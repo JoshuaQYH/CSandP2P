@@ -36,7 +36,7 @@ def listFile():
     return 0
 
 def judgeFileName(fileName):
-    return False;
+    return False
 
 # 发送下载命令，请求服务端返回该文件并接收保存，接收服务端消息提示
 def downloadFile(fileName):
@@ -45,11 +45,12 @@ def downloadFile(fileName):
     fs = open(file, 'wb')
     while True:
         data, addr = mainSocket.recvfrom(1024 * 8)
-        if not data:
+        if data.decode() == "<END>":
             break
         fs.write(data)
     return 0
     fs.close()
+
 # 发送文件给服务端，上传命令后发送文件，最后接收服务端消息提示
 def uploadFile(fileName):
      # 检测当前目录是否存在该文件

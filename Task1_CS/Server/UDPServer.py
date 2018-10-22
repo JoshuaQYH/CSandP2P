@@ -1,8 +1,16 @@
 import socket
 import os
 
+<<<<<<< HEAD
 filePath = "F:\\Github\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
 
+=======
+####################################### 变量初始化
+# 服务端下载的文件的的存放路径
+filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
+# 接收数据的缓冲区大小
+BUFFSIZE = 2048  
+>>>>>>> 3fbdaf1229a10c948e2ef9369d72ea3c218d81a7
 ############################################ socket相关配置
 # 建立UDP socket
 serverAddress = ('127.0.0.1', 3100)
@@ -32,7 +40,7 @@ def downloadFile(fileName):
     with open(file, 'rb') as fs:
         print("Start to send file")
         while True:
-            fileData = fs.read(1024 * 8)
+            fileData = fs.read(BUFFSIZE)
             if not fileData:
                 print("breaking from sending data")
                 break
@@ -40,6 +48,8 @@ def downloadFile(fileName):
                 mainSocket.sendto(fileData, clientAddress)
                 print ("reading the file")
         print("End the sending file")
+        str = "<END>" # 下载结束标志
+        mainSocket.sendto(str.encode("utf-8"), clientAddress)
         fs.close()     
 
 
@@ -50,7 +60,8 @@ def upload(fileName):
 #######################################命令部响应客户端请求部分
 while True:
     #服务器接收客户端消息
-    data, addr = mainSocket.recvfrom(2048)
+    data, addr = mainSocket.recvfrom(BUFFSIZE)
+    
     if not data:
         print ("client has exist")
         break

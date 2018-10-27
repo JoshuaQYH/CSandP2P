@@ -1,69 +1,87 @@
 import socket
 import os
+import struct
 
-<<<<<<< HEAD
-filePath = "F:\\Github\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
-
-=======
-####################################### 变量初始化
-# 服务端下载的文件的的存放路径
-filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task1_CS\\Client\\clientData\\"
-# 接收数据的缓冲区大小
-BUFFSIZE = 2048  
->>>>>>> 3fbdaf1229a10c948e2ef9369d72ea3c218d81a7
-############################################ socket相关配置
+filePath = "F:\\Github\\ComNetProject1\\Task1_CS\\Server\\serverData\\"
+BUFFSIZE = 1024
+# socket相关配置
 # 建立UDP socket
 serverAddress = ('127.0.0.1', 3100)
 mainSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 mainSocket.bind(serverAddress)
-clientAddress = ('127.0.0.1',3101)
+clientAddress = ('127.0.0.1', 3101)
 
-############################################ socket相关功能函数
+# socket相关功能函数
 # 列出资源文件夹ServerData中的数据文件，发送给客户端
+
+
 def listFile():
     print("Ready to list file")
-    file_dir = filePath    
-    for root, dirs, files in os.walk(file_dir):  
-        #print(root) #当前目录路径  
-        #print(dirs) #当前路径下所有子目录  
-        print(files) #当前路径下所有非目录子文件
+    file_dir = filePath
+    for root, dirs, files in os.walk(file_dir):
+        # print(root) #当前目录路径
+        # print(dirs) #当前路径下所有子目录
+        print(files)  # 当前路径下所有非目录子文件
         # files.remove("UDPServer.py")
         fileStr = str(files)
         mainSocket.sendto(fileStr.encode("utf-8"), clientAddress)
     print("Have sent files!")
 
 # 响应客户端下载文件的请求,先满足小型文件传输
+
+
 def downloadFile(fileName):
     # 打开要传输的文件
     file = filePath + fileName
-    print ("send " + file)
-    with open(file, 'rb') as fs:
+    print("send " + file)
+    if os.path.isfile(file):
+        fsize = str(os.path.getsize(file))
+        mainSocket.sendto(fsize.encode('utf-8'), clientAddress)
+
+        fs = open(file, 'rb')
         print("Start to send file")
         while True:
             fileData = fs.read(BUFFSIZE)
             if not fileData:
                 print("breaking from sending data")
                 break
-            else:
-                mainSocket.sendto(fileData, clientAddress)
-                print ("reading the file")
+            mainSocket.sendto(fileData, clientAddress)
+            print("reading the file")
         print("End the sending file")
-        str = "<END>" # 下载结束标志
-        mainSocket.sendto(str.encode("utf-8"), clientAddress)
-        fs.close()     
+        fs.close()
 
 
 # 接收客户端上传的文件
 def upload(fileName):
+    print("Ready to upload file from client")
+    data, addr = mainSocket.recvfrom(BUFFSIZE)
+    fsize = int(data,10)
+    if fsize:
+        file = filePath + fileName
+        fs = open(file, 'wb')
+        recvd_size = 0  # 定义已接收文件的大小
+        print("start receiving...")
+        while not recvd_size == fsize:
+            if fsize - recvd_size > BUFFSIZE:
+                data, addr = mainSocket.recvfrom(BUFFSIZE)
+                recvd_size += len(data)
+                fs.write(data)
+            else:
+                data, addr = mainSocket.recvfrom(fsize - recvd_size)
+                recvd_size = fsize
+                fs.write(data)          
+        print("end receive...")
+        fs.close()
     return 0
 
-#######################################命令部响应客户端请求部分
+
+# 命令部响应客户端请求部分
 while True:
-    #服务器接收客户端消息
+    # 服务器接收客户端消息
     data, addr = mainSocket.recvfrom(BUFFSIZE)
-    
+
     if not data:
-        print ("client has exist")
+        print("client has exist")
         break
     tmp = data.decode('utf-8')
     text = tmp.split()

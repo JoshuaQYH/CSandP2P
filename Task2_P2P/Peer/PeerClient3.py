@@ -11,12 +11,12 @@ import threading
 import base64
 
 ###############系统相关变量
-filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task2_P2P\\Peer\\Peer2Data\\"
+filePath = "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task2_P2P\\Peer\\Peer3Data\\"
 BUFFSIZE = 2048
 PEER_IP = "127.0.0.1"
-PEER_PORT = 8003
+PEER_PORT = 8005
 PEER_DOWNLOAD_IP = "127.0.0.1"
-PEER_DOWNLOAD_PORT = 8004
+PEER_DOWNLOAD_PORT = 8006
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = 8080
 cores = 4

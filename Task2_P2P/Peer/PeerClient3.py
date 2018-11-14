@@ -10,20 +10,20 @@ import multiprocessing as mp
 import threading
 import base64
 
-
-###############相关全局变量
-filePath =  "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task2_P2P\\Peer\\Peer1Data\\"
+###############系统相关变量
+filePath =  "C:\\Users\\Qiuyh\\Desktop\\ComNetProject1\\Task2_P2P\\Peer\\Peer3Data\\"
 BUFFSIZE = 2048
 PEER_IP = "127.0.0.1"
-PEER_PORT = 8001
+PEER_PORT = 8005
 PEER_DOWNLOAD_IP = "127.0.0.1"
-PEER_DOWNLOAD_PORT = 8002
+PEER_DOWNLOAD_PORT = 8006
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = 8080
+FILEandMD5 = {}
 cores = 4
 FIEL_BLOCK_SIZE = 1024 * 1024
+
 CAN_UPLOADSOURCE_FLAG = True  #  用户上传线程的可上传的标志，用于指示下载队列开始其中一个任务
-FILEandMD5 = {}
 
 ####################################################################
 #########################################文件相关函数接口#############
@@ -245,7 +245,7 @@ def downloadSourceFromPeer(FILE,IP_LIST,PORT_LIST):
                     print("经MD5检验，接收文件正确")
                 """
             except:
-                    print("文件接收失败")
+                   pass
             
                     
     # 双点传输    
@@ -327,7 +327,7 @@ def downloadSourceFromPeer(FILE,IP_LIST,PORT_LIST):
                                 requestNum+= 1       
                             index += 1
                     print("接收文件成功")
-                #current_fileMD5 = calFileListMD5(filePath +"Received-" + FILE)
+                current_fileMD5 = calFileListMD5(filePath +"Received-" + FILE)
                 """
                 if current_fileMD5 != FILEandMD5[FILE]:
                         print("接收的文件不完整")
@@ -335,7 +335,7 @@ def downloadSourceFromPeer(FILE,IP_LIST,PORT_LIST):
                     print("经MD5检验，接收文件正确")
                 """
             except:
-                pass
+                print("接收文件失败")
     return 0
 
 ############## 向服务器更新peer信息
